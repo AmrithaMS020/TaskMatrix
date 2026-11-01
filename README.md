@@ -2,6 +2,20 @@
 
 A web-based project management system built with Python, Django and MySQL. It helps companies manage projects, assign and track tasks, submit files, report bugs and verify completed work.
 
+
+## Screenshots
+
+### Login
+![Login](screenshots/login.png)
+
+### Manager Dashboard
+![Manager Dashboard](screenshots/dashboard.png)
+
+### Project Details
+![Project Details](screenshots/project.png)
+
+### AI Risk Prediction
+![AI Risk Prediction](screenshots/risk.png)
 ## Features
 
 - Separate dashboards for administrators, company managers, developers and testers
