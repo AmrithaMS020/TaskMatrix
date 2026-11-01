@@ -1,0 +1,153 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ module.module_name }} — TaskMatrix{% endblock %}
+
+{% block nav_role %}Tester view{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'core:tester_dashboard' %}" class="text-decoration-none small">
+    &larr; Back to dashboard
+</a>
+
+<div class="card mt-3 mb-4">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h3 class="mb-1">{{ module.module_name }}</h3>
+                <p class="text-muted mb-2">{{ module.project.project_name }}</p>
+            </div>
+
+            <span class="badge fs-6
+                {% if module.status == 'Pending' %}bg-secondary
+                {% elif module.status == 'In Progress' %}bg-primary
+                {% elif module.status == 'Testing' %}bg-info text-dark
+                {% elif module.status == 'Completed' %}bg-success
+                {% endif %}">
+                {{ module.status }}
+            </span>
+        </div>
+
+        <p class="mt-3">{{ module.description }}</p>
+
+        <div class="row small text-muted mb-3">
+            <div class="col-md-4">
+                Developer: {{ module.developer.name|default:"Unassigned" }}
+            </div>
+
+            <div class="col-md-4">
+                Deadline: {{ module.deadline }}
+            </div>
+
+            <div class="col-md-4">
+                Assigned: {{ module.assigned_date }}
+            </div>
+        </div>
+
+        {% if can_verify %}
+
+            <div class="d-flex gap-2">
+
+                <form method="post"
+                      action="{% url 'core:module_verify' module.module_id %}">
+
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-success">
+                        Approve — Mark Completed
+                    </button>
+
+                </form>
+
+                <a href="{% url 'core:bug_report_create' module.module_id %}"
+                   class="btn btn-outline-danger">
+                    Reject — Log a Bug
+                </a>
+
+            </div>
+
+        {% else %}
+
+            <p class="text-muted mb-0">
+
+                {% if module.status == 'Completed' %}
+
+                    This module has already been verified and completed.
+
+                {% else %}
+
+                    This module isn't in Testing yet — nothing to verify.
+
+                {% endif %}
+
+            </p>
+
+        {% endif %}
+
+    </div>
+</div>
+
+
+<!-- Bug History -->
+
+<h4 class="mb-3">Bug History</h4>
+
+<div class="list-group">
+
+    {% for bug in bugs %}
+
+        <div class="list-group-item bg-dark text-white">
+
+            <div class="fw-semibold text-white">
+
+                {{ bug.bug_title }}
+
+                <span class="badge ms-1
+                    {% if bug.severity == 'Critical' %}
+                        bg-danger
+                    {% elif bug.severity == 'High' %}
+                        bg-warning text-dark
+                    {% elif bug.severity == 'Medium' %}
+                        bg-info text-dark
+                    {% else %}
+                        bg-secondary
+                    {% endif %}">
+                    {{ bug.severity }}
+                </span>
+
+            </div>
+
+            <!-- Bug Description -->
+            <p class="mb-1 small text-white">
+                {{ bug.description }}
+            </p>
+
+            <!-- Bug Status and Dates -->
+            <p class="mb-0 small text-white">
+
+                Reported
+                {{ bug.reported_date|date:"M d, Y" }}
+
+                · Status: {{ bug.status }}
+
+                {% if bug.resolved_date %}
+                    · Resolved
+                    {{ bug.resolved_date|date:"M d, Y" }}
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    {% empty %}
+
+        <div class="list-group-item bg-dark text-white">
+            No bugs reported against this module.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

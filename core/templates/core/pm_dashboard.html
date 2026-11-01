@@ -1,0 +1,101 @@
+{% extends "core/base.html" %}
+{% block title %}PM Dashboard — TaskMatrix{% endblock %}
+{% block nav_role %}Project Manager: {{ pm.name }}{% endblock %}
+
+{% block content %}
+
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card card-hover bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">TOTAL PROJECTS</p>
+                <h2 class="mb-0 text-white fw-bold">{{ total_projects }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-hover bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">IN PROGRESS</p>
+                <h2 class="mb-0 text-primary fw-bold">{{ in_progress_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-hover bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">COMPLETED</p>
+                <h2 class="mb-0 text-success fw-bold">{{ completed_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-hover bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">LIKELY DELAYED</p>
+                <h2 class="mb-0 {% if likely_delayed_count %}text-danger{% else %}text-muted{% endif %} fw-bold">{{ likely_delayed_count }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    {% for project in projects %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 card-hover">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title text-white fw-bold mb-0">{{ project.project_name }}</h5>
+                        <span class="badge
+                            {% if project.priority == 'High' %}badge-danger-dark
+                            {% elif project.priority == 'Medium' %}badge-warning-dark
+                            {% else %}badge-success-dark{% endif %}">
+                            {{ project.priority }}
+                        </span>
+                    </div>
+                    <p class="card-text small text-secondary-light flex-grow-1">{{ project.description|truncatewords:18 }}</p>
+
+                    <div class="progress mb-2" style="height: 6px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ project.progress }}%;"></div>
+                    </div>
+                    <div class="d-flex justify-content-between tiny text-secondary-light mb-3">
+                        <span>{{ project.progress }}% complete</span>
+                        <span>Deadline: {{ project.deadline|date:"d M Y" }}</span>
+                    </div>
+
+                    <!-- AI Delay Status Badge -->
+                    <div class="p-2 mb-3 bg-subcard rounded-3 d-flex justify-content-between align-items-center">
+                        <span class="tiny text-secondary-light font-monospace">&#129302; AI Delay Forecast:</span>
+                        <span class="badge 
+                            {% if project.delay_prediction.status == 'Likely to be Delayed' %}badge-danger-dark
+                            {% elif project.delay_prediction.status == 'At Risk' %}badge-warning-dark
+                            {% else %}badge-success-dark{% endif %} small">
+                            {{ project.delay_prediction.status }}
+                            {% if project.delay_prediction.predicted_delay_days > 0 %}(+{{ project.delay_prediction.predicted_delay_days }}d){% endif %}
+                        </span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="badge
+                            {% if project.status == 'Not Started' %}bg-secondary
+                            {% elif project.status == 'In Progress' %}badge-info-dark
+                            {% elif project.status == 'Completed' %}badge-success-dark{% endif %}">
+                            {{ project.status }}
+                        </span>
+                        <a href="{% url 'core:project_detail' project.project_id %}" class="btn btn-outline-light btn-sm">
+                            Open Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="bg-subcard p-4 text-center rounded-3 text-secondary-light">
+                You don't have any projects yet. Click "+ New Project" to create your first one.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

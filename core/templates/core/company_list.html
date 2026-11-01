@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% block title %}Company Requests — TaskMatrix{% endblock %}
+{% block nav_role %} Admin{% endblock %}
+
+{% block content %}
+<a href="{% url 'core:global_admin_dashboard' %}" class="text-decoration-none small">&larr; Back to dashboard</a>
+
+<h3 class="mt-3 mb-4">Pending Company Requests</h3>
+
+<div class="row g-3 mb-5">
+    {% for company in pending_companies %}
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{ company.company_name }}</h5>
+                    <p class="text-muted small mb-2">{{ company.email }} &middot; {{ company.phone }}</p>
+                    <p class="small mb-3">{{ company.address }}</p>
+                    <p class="text-muted small mb-3">Requested {{ company.requested_at|date:"M d, Y" }}</p>
+
+                    <div class="d-flex gap-2">
+                        <form method="post" action="{% url 'core:company_approve' company.company_id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                        </form>
+                        <form method="post" action="{% url 'core:company_reject' company.company_id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-light border">No pending company requests right now.</div>
+        </div>
+    {% endfor %}
+</div>
+
+<h4 class="mb-3">Recent Decisions</h4>
+<div class="table-responsive">
+    <table class="table table-hover bg-white align-middle">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Status</th>
+                <th>Decided</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in decided_companies %}
+                <tr>
+                    <td>{{ company.company_name }}</td>
+                    <td>
+                        <span class="badge {% if company.status == 'Approved' %}bg-success{% else %}bg-danger{% endif %}">
+                            {{ company.status }}
+                        </span>
+                    </td>
+                    <td>{{ company.decided_at|date:"M d, Y" }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="3" class="text-muted">No decisions made yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

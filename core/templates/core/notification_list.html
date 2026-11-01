@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+{% block title %}Notifications — TaskMatrix{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">Notifications</h3>
+    {% if unread_count %}
+        <span class="badge bg-primary">{{ unread_count }} unread</span>
+    {% endif %}
+</div>
+
+<div class="list-group">
+    {% for note in notifications %}
+        <div class="list-group-item {% if note.status == 'Unread' %}bg-light{% endif %}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="badge
+                        {% if note.notification_type == 'Bug Report' %}bg-danger
+                        {% elif note.notification_type == 'AI Risk' %}bg-warning text-dark
+                        {% elif note.notification_type == 'Project Assigned' %}bg-primary
+                        {% else %}bg-success{% endif %}">
+                        {{ note.notification_type }}
+                    </span>
+                    <p class="mb-1 mt-2">{{ note.message }}</p>
+                    <p class="mb-0 small text-muted">{{ note.created_at|date:"M d, Y — g:i A" }}</p>
+                </div>
+                {% if note.status == 'Unread' %}
+                    <form method="post" action="{% url 'core:notification_mark_read' note.notification_id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-secondary">Mark as read</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="list-group-item text-muted">No notifications yet.</div>
+    {% endfor %}
+</div>
+{% endblock %}

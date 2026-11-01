@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TaskMatrix | Company Registration</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: "Inter", sans-serif;
+        }
+
+
+        /* =========================================
+           MAIN PAGE
+        ========================================= */
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            background: #f5f7fb;
+        }
+
+
+        /* =========================================
+           LEFT PANEL
+        ========================================= */
+
+        .left-panel {
+            width: 40%;
+            min-height: 100vh;
+
+            background: #0f1522;
+            color: white;
+
+            padding: 58px 62px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+
+        /* Logo */
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .logo-box {
+            width: 49px;
+            height: 49px;
+
+            background: #3b6cf5;
+            border-radius: 13px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .logo-name {
+            font-size: 21px;
+            font-weight: 700;
+        }
+
+
+        /* Left heading */
+
+        .left-content {
+            margin-top: 50px;
+        }
+
+        .left-heading {
+            font-size: 40px;
+            line-height: 1.28;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+            max-width: 570px;
+        }
+
+        .left-description {
+            color: #aab5c9;
+
+            font-size: 15px;
+            line-height: 1.65;
+
+            max-width: 590px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================================
+           FEATURE BOXES
+        ========================================= */
+
+        .feature-box {
+            background: #1a2335;
+
+            border-radius: 14px;
+
+            padding: 18px 21px;
+
+            display: flex;
+            align-items: center;
+
+            margin-top: 17px;
+
+            width: 100%;
+        }
+
+        .feature-icon {
+            width: 41px;
+            height: 41px;
+
+            background: #243250;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #4b7cff;
+
+            font-size: 17px;
+
+            flex-shrink: 0;
+        }
+
+        .feature-content {
+            margin-left: 17px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 700;
+
+            margin-bottom: 4px;
+        }
+
+        .feature-description {
+            font-size: 12px;
+            color: #8794ad;
+        }
+
+
+        /* Footer */
+
+        .footer {
+            color: #65728b;
+            font-size: 11px;
+        }
+
+
+        /* =========================================
+           RIGHT PANEL
+        ========================================= */
+
+        .right-panel {
+            width: 60%;
+            min-height: 100vh;
+
+            background: #f5f7fb;
+
+            padding: 55px 70px;
+
+            overflow-y: auto;
+        }
+
+
+        .form-container {
+            width: 100%;
+            max-width: 650px;
+
+            margin: 0 auto;
+        }
+
+
+        /* =========================================
+           FORM HEADER
+        ========================================= */
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+
+            color: #121927;
+
+            margin-bottom: 7px;
+        }
+
+        .form-header p {
+            margin: 0;
+
+            font-size: 14px;
+            color: #718096;
+        }
+
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .section-icon {
+            width: 36px;
+            height: 36px;
+
+            border-radius: 9px;
+
+            background: #e8efff;
+            color: #3b6cf5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-right: 11px;
+
+            font-size: 15px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+
+            color: #172033;
+
+            margin: 0;
+        }
+
+        .section-subtitle {
+            font-size: 11px;
+            color: #7c879a;
+
+            margin-top: 3px;
+        }
+
+
+        /* =========================================
+           FORM FIELDS
+        ========================================= */
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-label {
+            display: block;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            color: #172033;
+
+            margin-bottom: 7px;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #8c98ab;
+
+            font-size: 14px;
+
+            pointer-events: none;
+        }
+
+        .form-control {
+            height: 44px;
+
+            border: 1px solid #d6deeb;
+
+            border-radius: 8px;
+
+            background: #eaf1fc;
+
+            padding-left: 40px;
+            padding-right: 14px;
+
+            font-size: 13px;
+
+            color: #172033;
+
+            box-shadow: none;
+        }
+
+        textarea.form-control {
+            height: 75px;
+
+            padding-top: 12px;
+
+            resize: vertical;
+        }
+
+        .form-control::placeholder {
+            color: #7d8ca4;
+        }
+
+        .form-control:focus {
+            background: #eef4ff;
+
+            border-color: #3b6cf5;
+
+            box-shadow: 0 0 0 2px rgba(59, 108, 245, 0.10);
+        }
+
+
+        /* =========================================
+           PASSWORD
+        ========================================= */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+
+            color: #728098;
+
+            cursor: pointer;
+
+            padding: 3px;
+        }
+
+
+        .password-rules {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 7px;
+        }
+
+        .password-rule {
+            font-size: 9px;
+
+            color: #8b96a8;
+        }
+
+        .password-rule.valid {
+            color: #198754;
+        }
+
+
+        /* =========================================
+           SUBMIT BUTTON
+        ========================================= */
+
+        .register-button {
+            width: 100%;
+
+            height: 48px;
+
+            border: none;
+            border-radius: 8px;
+
+            background: #3b6cf5;
+
+            color: #fff;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            margin-top: 5px;
+
+            transition: 0.2s;
+        }
+
+        .register-button:hover {
+            background: #315edb;
+        }
+
+
+        /* =========================================
+           LOGIN LINK
+        ========================================= */
+
+        .login-text {
+            text-align: center;
+
+            margin-top: 22px;
+
+            font-size: 12px;
+
+            color: #718096;
+        }
+
+        .login-text a {
+            color: #1264d9;
+
+            font-weight: 600;
+
+            text-decoration: underline;
+        }
+
+
+        /* =========================================
+           ALERT
+        ========================================= */
+
+        .alert {
+            font-size: 12px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1000px) {
+
+            .page-wrapper {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                width: 100%;
+                min-height: auto;
+
+                padding: 40px;
+            }
+
+            .right-panel {
+                width: 100%;
+                min-height: auto;
+
+                padding: 45px 30px;
+            }
+
+            .left-heading {
+                font-size: 32px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .left-panel {
+                padding: 30px 25px;
+            }
+
+            .right-panel {
+                padding: 35px 20px;
+            }
+
+            .left-heading {
+                font-size: 28px;
+            }
+
+            .feature-box {
+                padding: 15px;
+            }
+
+            .form-header h1 {
+                font-size: 25px;
+            }
+
+            .row > div {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-wrapper">
+
+
+    <!-- ==================================================
+         LEFT SIDE
+    ================================================== -->
+
+    <div class="left-panel">
+
+
+        <div>
+
+            <!-- LOGO -->
+
+            <div class="logo">
+
+                <div class="logo-box">
+                    TM
+                </div>
+
+                <div class="logo-name">
+                    TaskMatrix
+                </div>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="left-content">
+
+                <div class="left-heading">
+
+                    One workspace for
+                    projects, teams and quality.
+
+                </div>
+
+
+                <div class="left-description">
+
+                    Plan projects, assign work to developers and
+                    testers, track bugs and monitor progress —
+                    all from a single company dashboard.
+
+                </div>
+
+
+                <!-- FEATURE 1 -->
+
+                <div class="feature-box">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-grid-3x3-gap"></i>
+
+                    </div>
+
+                    <div class="feature-content">
+
+                        <div class="feature-title">
+                            Role-based dashboards
+                        </div>
+
+                        <div class="feature-description">
+                            Admin, PM, Developer and Tester views.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FEATURE 2 -->
+
+                <div class="feature-box">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-shield"></i>
+
+                    </div>
+
+                    <div class="feature-content">
+
+                        <div class="feature-title">
+                            Secure by design
+                        </div>
+
+                        <div class="feature-description">
+                            Session management and permissions built in.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FEATURE 3 -->
+
+                <div class="feature-box">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-lightning-charge"></i>
+
+                    </div>
+
+                    <div class="feature-content">
+
+                        <div class="feature-title">
+                            AI risk prediction
+                        </div>
+
+                        <div class="feature-description">
+                            Flags at-risk projects automatically.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            © 2026 TaskMatrix. All rights reserved.
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==================================================
+         RIGHT SIDE
+    ================================================== -->
+
+    <div class="right-panel">
+
+
+        <div class="form-container">
+
+
+            <!-- HEADER -->
+
+            <div class="form-header">
+
+                <h1>
+                    Company Registration
+                </h1>
+
+                <p>
+                    Create your company account and administrator login.
+                </p>
+
+            </div>
+
+
+
+            <!-- DJANGO MESSAGES -->
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="alert
+                        {% if message.tags == 'error' %}
+                            alert-danger
+                        {% else %}
+                            alert-{{ message.tags }}
+                        {% endif %}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+
+            <!-- FORM -->
+
+            <form method="post">
+
+                {% csrf_token %}
+
+
+
+                <!-- ======================================
+                     COMPANY INFORMATION
+                ======================================= -->
+
+                <div class="section">
+
+
+                    <div class="section-header">
+
+                        <div class="section-icon">
+
+                            <i class="bi bi-building"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="section-title">
+                                Company Information
+                            </div>
+
+                            <div class="section-subtitle">
+                                Enter your company details
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+
+
+                        <!-- COMPANY NAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Company Name
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-building input-icon"></i>
+
+                                    <input
+                                        type="text"
+                                        name="company_name"
+                                        class="form-control"
+                                        placeholder="Company name"
+                                        value="{{ company_name|default:'' }}"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- COMPANY EMAIL -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Company Email
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-envelope input-icon"></i>
+
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        class="form-control"
+                                        placeholder="company@email.com"
+                                        value="{{ email|default:'' }}"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PHONE -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Phone Number
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-telephone input-icon"></i>
+
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        class="form-control"
+                                        placeholder="9876543210"
+                                        maxlength="10"
+                                        pattern="[0-9]{10}"
+                                        value="{{ phone|default:'' }}"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Company Address
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-geo-alt input-icon"></i>
+
+                                    <textarea
+                                        name="address"
+                                        class="form-control"
+                                        placeholder="Company address">{{ address|default:'' }}</textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ======================================
+                     ADMIN ACCOUNT
+                ======================================= -->
+
+                <div class="section">
+
+
+                    <div class="section-header">
+
+                        <div class="section-icon">
+
+                            <i class="bi bi-person-gear"></i>
+
+                        </div>
+
+                        <div>
+
+                            <div class="section-title">
+                                Administrator Account
+                            </div>
+
+                            <div class="section-subtitle">
+                                Create your company administrator login
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+
+
+                        <!-- ADMIN NAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Administrator Name
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-person input-icon"></i>
+
+                                    <input
+                                        type="text"
+                                        name="admin_name"
+                                        class="form-control"
+                                        placeholder="Your full name"
+                                        value="{{ admin_name|default:'' }}"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- USERNAME -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Admin Username
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-at input-icon"></i>
+
+                                    <input
+                                        type="text"
+                                        name="admin_username"
+                                        class="form-control"
+                                        placeholder="admin_username"
+                                        value="{{ admin_username|default:'' }}"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Password
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-lock input-icon"></i>
+
+                                    <input
+                                        type="password"
+                                        name="admin_password"
+                                        id="password"
+                                        class="form-control"
+                                        placeholder="Create password"
+                                        minlength="8"
+                                        required>
+
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('password', this)">
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+
+                                <!-- PASSWORD RULES -->
+
+                                <div class="password-rules">
+
+                                    <span
+                                        class="password-rule"
+                                        id="lengthRule">
+
+                                        ● 8+ characters
+
+                                    </span>
+
+                                    <span
+                                        class="password-rule"
+                                        id="upperRule">
+
+                                        ● Uppercase
+
+                                    </span>
+
+                                    <span
+                                        class="password-rule"
+                                        id="numberRule">
+
+                                        ● Number
+
+                                    </span>
+
+                                    <span
+                                        class="password-rule"
+                                        id="specialRule">
+
+                                        ● Special character
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- CONFIRM PASSWORD -->
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+
+                                <label class="form-label">
+                                    Confirm Password
+                                </label>
+
+                                <div class="input-container">
+
+                                    <i class="bi bi-lock-fill input-icon"></i>
+
+                                    <input
+                                        type="password"
+                                        name="admin_password_confirm"
+                                        id="confirmPassword"
+                                        class="form-control"
+                                        placeholder="Confirm password"
+                                        minlength="8"
+                                        required>
+
+                                    <button
+                                        type="button"
+                                        class="password-toggle"
+                                        onclick="togglePassword('confirmPassword', this)">
+
+                                        <i class="bi bi-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ======================================
+                     SUBMIT
+                ======================================= -->
+
+                <button
+                    type="submit"
+                    class="register-button">
+
+                    Create Company Account
+
+                </button>
+
+
+
+            </form>
+
+
+
+            <!-- LOGIN -->
+
+            <div class="login-text">
+
+                Already have an account?
+
+                <a href="{% url 'core:login' %}">
+                    Login
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+=================================================== -->
+
+<script>
+
+
+    /* ==========================================
+       SHOW / HIDE PASSWORD
+    ========================================== */
+
+    function togglePassword(id, button) {
+
+        const input = document.getElementById(id);
+
+        const icon = button.querySelector("i");
+
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            icon.classList.remove("bi-eye");
+
+            icon.classList.add("bi-eye-slash");
+
+        }
+
+        else {
+
+            input.type = "password";
+
+            icon.classList.remove("bi-eye-slash");
+
+            icon.classList.add("bi-eye");
+
+        }
+
+    }
+
+
+
+    /* ==========================================
+       PHONE NUMBER
+    ========================================== */
+
+    const phoneInput =
+        document.querySelector('input[name="phone"]');
+
+
+    phoneInput.addEventListener("input", function () {
+
+        this.value =
+            this.value.replace(/\D/g, "").slice(0, 10);
+
+    });
+
+
+
+    /* ==========================================
+       PASSWORD VALIDATION
+    ========================================== */
+
+    const password =
+        document.getElementById("password");
+
+
+    password.addEventListener("input", function () {
+
+        const value = this.value;
+
+
+        /* 8 Characters */
+
+        if (value.length >= 8) {
+
+            document
+                .getElementById("lengthRule")
+                .classList.add("valid");
+
+        }
+
+        else {
+
+            document
+                .getElementById("lengthRule")
+                .classList.remove("valid");
+
+        }
+
+
+        /* Uppercase */
+
+        if (/[A-Z]/.test(value)) {
+
+            document
+                .getElementById("upperRule")
+                .classList.add("valid");
+
+        }
+
+        else {
+
+            document
+                .getElementById("upperRule")
+                .classList.remove("valid");
+
+        }
+
+
+        /* Number */
+
+        if (/[0-9]/.test(value)) {
+
+            document
+                .getElementById("numberRule")
+                .classList.add("valid");
+
+        }
+
+        else {
+
+            document
+                .getElementById("numberRule")
+                .classList.remove("valid");
+
+        }
+
+
+        /* Special Character */
+
+        if (/[^A-Za-z0-9]/.test(value)) {
+
+            document
+                .getElementById("specialRule")
+                .classList.add("valid");
+
+        }
+
+        else {
+
+            document
+                .getElementById("specialRule")
+                .classList.remove("valid");
+
+        }
+
+    });
+
+
+
+    /* ==========================================
+       CONFIRM PASSWORD
+    ========================================== */
+
+    const confirmPassword =
+        document.getElementById("confirmPassword");
+
+
+    confirmPassword.addEventListener("input", function () {
+
+        if (this.value !== password.value) {
+
+            this.style.borderColor = "#dc3545";
+
+        }
+
+        else {
+
+            this.style.borderColor = "#198754";
+
+        }
+
+    });
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In — TaskMatrix</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body { height: 100%; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .split-wrap { min-height: 100vh; display: flex; }
+
+        /* LEFT PANEL */
+        .brand-panel {
+            background-color: #0f1522;
+            color: #e5e9f0;
+            width: 42%;
+            padding: 48px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .brand-badge {
+            width: 40px; height: 40px;
+            background-color: #3b6cf5;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+        .brand-name { font-weight: 700; font-size: 1.15rem; margin-left: 10px; }
+        .brand-headline { font-size: 2.1rem; font-weight: 700; line-height: 1.25; margin-top: 40px; color: #fff; }
+        .brand-sub { color: #a8b0c0; margin-top: 14px; font-size: 0.98rem; line-height: 1.5; }
+        .feature-card {
+            background-color: #1a2233;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin-top: 14px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        .feature-icon {
+            width: 34px; height: 34px;
+            background-color: #24304a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6d9bff;
+            flex-shrink: 0;
+        }
+        .feature-title { font-weight: 600; font-size: 0.95rem; color: #fff; margin-bottom: 2px; }
+        .feature-sub { font-size: 0.85rem; color: #8b93a7; }
+        .brand-footer { color: #6b7386; font-size: 0.8rem; }
+
+        /* RIGHT PANEL */
+        .form-panel {
+            width: 58%;
+            background-color: #0b0f19;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: #f8fafc;
+        }
+        .login-card { width: 100%; max-width: 440px; background-color: #1e293b; padding: 36px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .login-card h2 { font-weight: 700; font-size: 1.6rem; margin-bottom: 6px; color: #fff; }
+        .login-card .subtitle { color: #94a3b8; margin-bottom: 28px; }
+        .form-label { font-weight: 600; font-size: 0.9rem; color: #cbd5e1; }
+        .form-control { padding: 10px 14px; border-radius: 8px; background-color: #0f172a; border: 1px solid rgba(255,255,255,0.1); color: #fff; }
+        .form-control:focus { background-color: #0f172a; border-color: #3b82f6; color: #fff; box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+        .btn-signin {
+            background-color: #3b82f6; border: none; padding: 11px; border-radius: 8px;
+            font-weight: 600; width: 100%; color: #fff;
+        }
+        .btn-signin:hover { background-color: #2563eb; }
+        .helper-text { text-align: center; color: #94a3b8; font-size: 0.88rem; margin-top: 20px; }
+
+        @media (max-width: 900px) {
+            .split-wrap { flex-direction: column; }
+            .brand-panel, .form-panel { width: 100%; }
+            .brand-panel { padding: 32px; }
+        }
+    </style>
+</head>
+<body>
+<div class="split-wrap">
+
+    <!-- LEFT: BRAND PANEL -->
+    <div class="brand-panel">
+        <div>
+            <div class="d-flex align-items-center">
+                <span class="brand-badge">TM</span>
+                <span class="brand-name">TaskMatrix</span>
+            </div>
+
+            <div class="brand-headline">One workspace for<br>projects, teams and quality.</div>
+            <div class="brand-sub">
+                Plan projects, assign work to developers and testers, track bugs
+                and monitor progress — all from a single company dashboard.
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">&#9638;</div>
+                <div>
+                    <div class="feature-title">Role-based dashboards</div>
+                    <div class="feature-sub">Admin, PM, Developer and Tester views.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">&#128737;</div>
+                <div>
+                    <div class="feature-title">Secure by design</div>
+                    <div class="feature-sub">Session management and permissions built in.</div>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">&#9889;</div>
+                <div>
+                    <div class="feature-title">AI risk prediction</div>
+                    <div class="feature-sub">Flags at-risk projects automatically.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="brand-footer">© 2026 TaskMatrix. All rights reserved.</div>
+    </div>
+
+    <!-- RIGHT: LOGIN FORM -->
+    <div class="form-panel">
+        <div class="login-card">
+            <h2>Welcome back</h2>
+            <div class="subtitle">Login in with your username to continue.</div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %} py-2">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="e.g. dev_dan" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="********" required>
+                </div>
+                <button type="submit" class="btn btn-signin">Login</button>
+            </form>
+
+            <div class="helper-text">
+                New company? <a href="{% url 'core:company_register' %}">Register here</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

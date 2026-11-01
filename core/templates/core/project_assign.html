@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+{% block title %}Assign Project — TaskMatrix{% endblock %}
+{% block nav_role %}Company Admin{% endblock %}
+
+{% block content %}
+<a href="{% url 'core:company_admin_dashboard' %}" class="text-decoration-none small">&larr; Back to dashboard</a>
+
+<h3 class="mt-3 mb-4">Assign Project</h3>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Client Name</label>
+                        <input type="text" name="client_name" class="form-control"
+                               placeholder="ABC Company" value="{{ client_name|default:'' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Project Description</label>
+                        <textarea name="description" class="form-control" rows="3"
+                                  placeholder="Development of an e-commerce website">{{ description|default:'' }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Project Manager</label>
+                        <select name="project_manager_id" class="form-select" required>
+                            <option value="">Select project manager</option>
+                            {% for pm in project_managers %}
+                                <option value="{{ pm.employee_id }}" {% if project_manager_id == pm.employee_id|stringformat:"s" %}selected{% endif %}>
+                                    {{ pm.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if not project_managers %}
+                            <p class="text-danger small mt-1">No active Project Managers found — add one from Manage Employees first.</p>
+                        {% endif %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Assign Date</label>
+                            <input type="date" name="assign_date" class="form-control"
+                                   value="{{ assign_date|default:'' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Deadline</label>
+                            <input type="date" name="deadline" class="form-control"
+                                   value="{{ deadline|default:'' }}" required>
+                        </div>
+                    </div>
+                    
+                
+
+                    <button type="submit" class="btn btn-primary w-100">Assign Project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

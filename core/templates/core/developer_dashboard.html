@@ -1,0 +1,90 @@
+{% extends "core/base.html" %}
+{% block title %}Developer Dashboard — TaskMatrix{% endblock %}
+{% block nav_role %}Developer: {{ developer.name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0 text-white fw-bold">My Modules</h3>
+    {% if overdue_count %}
+        <span class="badge badge-danger-dark fs-6">{{ overdue_count }} overdue</span>
+    {% endif %}
+</div>
+
+<div class="row g-3 mb-5">
+    {% for module in modules %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 card-hover {% if module.is_overdue %}border-danger{% endif %}">
+                <div class="card-body d-flex flex-column p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title text-white fw-bold mb-0">{{ module.module_name }}</h5>
+                        <span class="badge
+                            {% if module.status == 'Pending' %}bg-secondary
+                            {% elif module.status == 'In Progress' %}badge-info-dark
+                            {% elif module.status == 'Testing' %}badge-purple-dark
+                            {% endif %}">
+                            {{ module.status }}
+                        </span>
+                    </div>
+                    <p class="text-secondary-light tiny font-monospace mb-2">{{ module.project.project_name }}</p>
+                    <p class="card-text small text-secondary-light flex-grow-1">{{ module.description|truncatewords:20 }}</p>
+                    <p class="small mb-3 {% if module.is_overdue %}text-danger fw-bold{% else %}text-secondary-light{% endif %}">
+                        Deadline: {{ module.deadline|date:"d M Y" }}
+                        {% if module.is_overdue %} &mdash; <span class="badge badge-danger-dark">Overdue</span>{% endif %}
+                    </p>
+                    <a href="{% url 'core:module_detail_dev' module.module_id %}" class="btn btn-outline-light btn-sm mt-auto">
+                        Open Module
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="bg-subcard p-4 text-center rounded-3 text-secondary-light">
+                No modules currently assigned to you.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<h3 class="mb-3 text-white fw-bold">My Open Bugs</h3>
+<div class="table-responsive rounded-3">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Bug</th>
+                <th>Module</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Reported</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bug in open_bugs %}
+                <tr>
+                    <td><strong class="text-white">{{ bug.bug_title }}</strong></td>
+                    <td class="text-secondary-light">{{ bug.module.module_name }}</td>
+                    <td>
+                        <span class="badge
+                            {% if bug.severity == 'Critical' %}badge-danger-dark
+                            {% elif bug.severity == 'High' %}badge-warning-dark
+                            {% elif bug.severity == 'Medium' %}badge-info-dark
+                            {% else %}bg-secondary{% endif %}">
+                            {{ bug.severity }}
+                        </span>
+                    </td>
+                    <td class="text-secondary-light">{{ bug.status }}</td>
+                    <td class="text-secondary-light">{{ bug.reported_date|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'core:module_detail_dev' bug.module.module_id %}" class="btn btn-sm btn-outline-light">
+                            View
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-secondary-light py-4 text-center">No open bugs assigned to you. &#127881;</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

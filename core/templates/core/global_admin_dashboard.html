@@ -1,0 +1,52 @@
+{% extends "core/base.html" %}
+{% block title %} Admin Dashboard — TaskMatrix{% endblock %}
+{% block nav_role %} Admin{% endblock %}
+
+{% block content %}
+<h3 class="mb-4"> Admin Dashboard</h3>
+
+
+
+
+
+<h6 class="text-uppercase mb-3" style="color: white; font-size: 16px; font-weight: 600;">
+    Company Approvals
+</h6>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <p class="small mb-1" style="color: white;">Pending Companies</p>
+                <h2 class="mb-0">{{ pending_count }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <p class="small mb-1" style="color: white;">Approved Companies</p>
+                <h2 class="mb-0 text-success">{{ approved_count }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <p class="small mb-1" style="color: white;">Rejected Companies</p>
+                <h2 class="mb-0 text-danger">{{ rejected_count }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'core:company_list' %}" class="btn btn-primary">
+    Review Company Requests
+    {% if pending_count %}
+        <span class="badge bg-light text-dark ms-1">{{ pending_count }}</span>
+    {% endif %}
+</a>
+
+{% endblock %}

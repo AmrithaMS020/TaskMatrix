@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+{% block title %}Employees — TaskMatrix{% endblock %}
+{% block nav_role %}Company Admin{% endblock %}
+
+{% block content %}
+<a href="{% url 'core:company_admin_dashboard' %}" class="text-decoration-none small">&larr; Back to dashboard</a>
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+    <h3 class="mb-0">Employees</h3>
+    <a href="{% url 'core:employee_create' %}" class="btn btn-primary btn-sm">+ Add Employee</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover bg-white align-middle">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.name }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td>
+                        <span class="badge
+                            {% if employee.role == 'Project Manager' %}bg-primary
+                            {% elif employee.role == 'Developer' %}bg-info text-dark
+                            {% elif employee.role == 'Tester' %}bg-warning text-dark
+                            {% endif %}">
+                            {{ employee.role }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge {% if employee.status == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ employee.status }}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'core:employee_update' employee.employee_id %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <form method="post" action="{% url 'core:employee_deactivate' employee.employee_id %}" class="d-inline">
+                            {% csrf_token %}
+                            {% if employee.status == 'Active' %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Deactivate</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-sm btn-outline-success">Reactivate</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-muted">No employees yet. Add your first one.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

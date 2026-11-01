@@ -1,0 +1,106 @@
+{% extends "core/base.html" %}
+{% block title %}Company Admin Dashboard — TaskMatrix{% endblock %}
+{% block nav_role %}Company Admin: {{ company_admin.name }}{% endblock %}
+
+{% block content %}
+<h3 class="mb-4 text-white fw-bold">{{ company_admin.company.company_name }} — Dashboard</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">TOTAL EMPLOYEES</p>
+                <h2 class="mb-0 text-white fw-bold">{{ employee_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">ACTIVE EMPLOYEES</p>
+                <h2 class="mb-0 text-success fw-bold">{{ active_employee_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">HIGH RISK PROJECTS</p>
+                <h2 class="mb-0 {% if high_risk_count %}text-danger{% else %}text-muted{% endif %}  fw-bold">{{ high_risk_count }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-subcard border-0">
+            <div class="card-body">
+                <p class="text-secondary-light tiny font-monospace mb-1">MEDIUM RISK PROJECTS</p>
+                <h2 class="mb-0 {% if medium_risk_count %}text-warning{% else %}text-muted{% endif %} fw-bold">{{ medium_risk_count }}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex gap-2">
+    <a href="{% url 'core:employee_list' %}" class="btn btn-primary">Manage Employees</a>
+    <a href="{% url 'core:project_assign' %}" class="btn btn-outline-light">Assign Project</a>
+</div>
+
+<h4 class="mt-5 mb-3 text-white fw-bold">All Projects — AI Delay & Risk Overview</h4>
+<div class="table-responsive rounded-3">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Project Manager</th>
+                <th>Status</th>
+                <th>Progress</th>
+                <th>AI Delay Forecast</th>
+                <th>Risk Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+                <tr>
+                    <td><strong class="text-white">{{ project.project_name }}</strong></td>
+                    <td class="text-secondary-light">{{ project.project_manager.name|default:"Unassigned" }}</td>
+                    <td>
+                        <span class="badge
+                            {% if project.status == 'Not Started' %}bg-secondary
+                            {% elif project.status == 'In Progress' %}badge-info-dark
+                            {% elif project.status == 'Completed' %}badge-success-dark{% endif %}">
+                            {{ project.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="text-secondary-light">{{ project.progress }}%</span>
+                            <div class="progress flex-grow-1" style="height: 6px; min-width: 60px;">
+                                <div class="progress-bar bg-primary" style="width: {{ project.progress }}%;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge 
+                            {% if project.delay_prediction.status == 'Likely to be Delayed' %}badge-danger-dark
+                            {% elif project.delay_prediction.status == 'At Risk' %}badge-warning-dark
+                            {% else %}badge-success-dark{% endif %}">
+                            {{ project.delay_prediction.status }}
+                            {% if project.delay_prediction.predicted_delay_days > 0 %}(+{{ project.delay_prediction.predicted_delay_days }}d){% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge
+                            {% if project.risk.risk_level == 'High' %}badge-danger-dark
+                            {% elif project.risk.risk_level == 'Medium' %}badge-warning-dark
+                            {% else %}badge-success-dark{% endif %}">
+                            {{ project.risk.risk_level }}
+                        </span>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-secondary-light py-4 text-center">No projects assigned yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

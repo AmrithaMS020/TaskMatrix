@@ -1,0 +1,66 @@
+{% extends "core/base.html" %}
+{% block title %}New Module — TaskMatrix{% endblock %}
+{% block nav_role %}Project Manager{% endblock %}
+
+{% block content %}
+<a href="{% url 'core:project_detail' project.project_id %}" class="text-decoration-none small">&larr; Back to {{ project.project_name }}</a>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mt-3">
+            <div class="card-body p-4">
+                <h4 class="mb-1">Add Module</h4>
+                <p class="text-muted small mb-4">{{ project.project_name }}</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Module Name</label>
+                        <input type="text" name="module_name" class="form-control"
+                               value="{{ module_name|default:'' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3">{{ description|default:'' }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Deadline</label>
+                        <input type="date" name="deadline" class="form-control"
+                               value="{{ deadline|default:'' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Assign Developer</label>
+                        <select name="developer_id" class="form-select" required>
+                            <option value="">Choose a developer&hellip;</option>
+                            {% for dev in developers %}
+                                <option value="{{ dev.employee_id }}" {% if developer_id == dev.employee_id|stringformat:"s" %}selected{% endif %}>
+                                    {{ dev.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if not developers %}
+                            <p class="text-danger small mt-1">No active developers found — add one from Manage Employees first.</p>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">Assign Tester</label>
+                        <select name="tester_id" class="form-select" required>
+                            <option value="">Choose a tester&hellip;</option>
+                            {% for t in testers %}
+                                <option value="{{ t.employee_id }}" {% if tester_id == t.employee_id|stringformat:"s" %}selected{% endif %}>
+                                    {{ t.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if not testers %}
+                            <p class="text-danger small mt-1">No active testers found — add one from Manage Employees first.</p>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Create Module</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

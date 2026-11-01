@@ -1,0 +1,170 @@
+{% extends "core/base.html" %}
+{% block title %}AI Delay & Risk Analysis — {{ project.project_name }}{% endblock %}
+{% block nav_role %}Project Manager{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+    <a href="{% url 'core:project_detail' project.project_id %}" class="text-decoration-none text-secondary-light small">&larr; Back to {{ project.project_name }}</a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Main AI Decision Engine Container Card -->
+        <div class="card mb-4 shadow-lg border-0" style="background-color: #1e293b; border: 1px solid rgba(255, 255, 255, 0.08) !important;">
+            <div class="card-body p-4 p-md-5">
+                
+                <!-- Header Title Bar -->
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+                    <div>
+                        <span class="badge badge-purple-dark text-uppercase font-monospace mb-2 px-3 py-1">
+                            &#129302; AI Decision Engine
+                        </span>
+                        <h2 class="h3 fw-bold text-white mb-1">{{ project.project_name }}</h2>
+                        <p class="text-secondary-light mb-0 small">
+                            Planned Deadline: <strong class="text-white">{{ project.deadline|date:"d M Y" }}</strong> &middot; 
+                            Current Progress: <strong class="text-info">{{ project.progress }}%</strong>
+                        </p>
+                    </div>
+                    <div class="text-md-end">
+                        <span class="badge 
+                            {% if delay_prediction.status == 'Likely to be Delayed' %}badge-danger-dark
+                            {% elif delay_prediction.status == 'At Risk' %}badge-warning-dark
+                            {% else %}badge-success-dark{% endif %} fs-6 px-3 py-2 me-2">
+                            {{ delay_prediction.status }}
+                        </span>
+                        <div class="mt-2 text-secondary-light small">
+                            Confidence Rating: <strong class="text-primary-light" style="color: #60a5fa;">{{ delay_prediction.confidence_score }}%</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 Prediction Cards Row (Item 6) -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="bg-subcard p-3 p-xl-4 rounded-3 h-100 d-flex flex-column justify-content-between">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary-light small font-monospace">PREDICTED COMPLETION</span>
+                                <span class="fs-5 text-primary">&#128197;</span>
+                            </div>
+                            <h4 class="fw-bold text-white mb-0 mt-1" style="font-size: 1.35rem;">
+                                {{ delay_prediction.predicted_completion_date|date:"d M Y" }}
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="bg-subcard p-3 p-xl-4 rounded-3 h-100 d-flex flex-column justify-content-between">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary-light small font-monospace">PREDICTED DELAY</span>
+                                <span class="fs-5 {% if delay_prediction.predicted_delay_days > 0 %}text-danger{% else %}text-success{% endif %}">&#9200;</span>
+                            </div>
+                            <h4 class="fw-bold mb-0 mt-1 {% if delay_prediction.predicted_delay_days > 0 %}text-danger{% else %}text-success{% endif %}" style="font-size: 1.35rem;">
+                                {% if delay_prediction.predicted_delay_days > 0 %}
+                                    +{{ delay_prediction.predicted_delay_days }} Day{% if delay_prediction.predicted_delay_days > 1 %}s{% endif %}
+                                {% else %}
+                                    0 Days (On Schedule)
+                                {% endif %}
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="bg-subcard p-3 p-xl-4 rounded-3 h-100 d-flex flex-column justify-content-between">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="text-secondary-light small font-monospace">RISK RATING LEVEL</span>
+                                <span class="fs-5 {% if delay_prediction.risk_level == 'High' %}text-danger{% elif delay_prediction.risk_level == 'Medium' %}text-warning{% else %}text-success{% endif %}">&#128737;</span>
+                            </div>
+                            <h4 class="fw-bold mb-0 mt-1 {% if delay_prediction.risk_level == 'High' %}text-danger{% elif delay_prediction.risk_level == 'Medium' %}text-warning{% else %}text-success{% endif %}" style="font-size: 1.35rem;">
+                                {{ delay_prediction.risk_level }} Risk
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Executive Summary Panel (Item 7) -->
+                <div class="highlight-panel-blue mb-4">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="fs-5 text-primary">&#128161;</span>
+                        <h6 class="fw-bold text-white mb-0">Executive Summary for PM</h6>
+                    </div>
+                    <p class="text-secondary-light mb-0 small leading-relaxed" style="color: #e2e8f0 !important;">
+                        {{ delay_prediction.summary_explanation }}
+                    </p>
+                </div>
+
+                <!-- Key Contributing Factors Panel (Item 8) -->
+                <div class="mb-4">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="text-warning fs-5">&#9888;</span>
+                        <h6 class="fw-bold text-white mb-0 text-uppercase font-monospace small">Key Contributing Factors</h6>
+                    </div>
+                    <div class="bg-subcard rounded-3 p-3">
+                        <ul class="list-group list-group-flush mb-0">
+                            {% for factor in delay_prediction.contributing_factors %}
+                                <li class="list-group-item bg-transparent px-0 py-2 border-secondary border-opacity-10 text-white small d-flex align-items-start gap-2">
+                                    <span class="text-warning mt-1">&bull;</span>
+                                    <span>{{ factor }}</span>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item bg-transparent px-0 py-2 text-success small d-flex align-items-center gap-2">
+                                    <span>&check;</span>
+                                    <span>No negative risk factors detected. Project is executing on target.</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Project Health Metrics 4 Cards (Item 9) -->
+                <div class="mb-4">
+                    <h6 class="fw-bold text-white mb-3 text-uppercase font-monospace small">Project Health Metrics</h6>
+                    <div class="row g-3">
+                        <div class="col-6 col-md-3">
+                            <div class="bg-subcard p-3 rounded-3 text-center h-100">
+                                <span class="text-secondary-light tiny font-monospace d-block mb-1">COMPLETION RATE</span>
+                                <h3 class="fw-bold text-primary mb-1">{{ delay_prediction.metrics.completion_rate }}%</h3>
+                                <span class="text-secondary-light tiny">{{ delay_prediction.metrics.completed_modules }}/{{ delay_prediction.metrics.total_modules }} tasks</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="bg-subcard p-3 rounded-3 text-center h-100">
+                                <span class="text-secondary-light tiny font-monospace d-block mb-1">OVERDUE TASKS</span>
+                                <h3 class="fw-bold {% if delay_prediction.metrics.overdue_modules %}text-danger{% else %}text-success{% endif %} mb-1">
+                                    {{ delay_prediction.metrics.overdue_modules }}
+                                </h3>
+                                <span class="text-secondary-light tiny">Past task deadline</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="bg-subcard p-3 rounded-3 text-center h-100">
+                                <span class="text-secondary-light tiny font-monospace d-block mb-1">UNRESOLVED BUGS</span>
+                                <h3 class="fw-bold {% if delay_prediction.metrics.unresolved_bugs %}text-danger{% else %}text-success{% endif %} mb-1">
+                                    {{ delay_prediction.metrics.unresolved_bugs }}
+                                </h3>
+                                <span class="text-secondary-light tiny">{{ delay_prediction.metrics.critical_high_bugs }} Critical/High</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="bg-subcard p-3 rounded-3 text-center h-100">
+                                <span class="text-secondary-light tiny font-monospace d-block mb-1">TEAM WORKLOAD</span>
+                                <h3 class="fw-bold text-white mb-1">{{ delay_prediction.metrics.team_workload }}</h3>
+                                <span class="text-secondary-light tiny">Developer load index</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- How AI Delay Prediction Works Panel (Item 10) -->
+                <div class="highlight-panel-purple">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="fs-5 text-purple" style="color: #a78bfa;">&#129302;</span>
+                        <h6 class="fw-bold text-white mb-0">How AI Delay Prediction Works</h6>
+                    </div>
+                    <p class="text-secondary-light mb-0 small leading-relaxed" style="color: #cbd5e1 !important;">
+                        The TaskMatrix AI Delay Prediction model dynamically evaluates your real project metrics—including module completion velocity, remaining pending tasks, overdue module ratios, unresolved severe bug workloads, developer assignment capacity, and elapsed timeline percentage. It computes a realistic completion date and delay estimate so Project Managers can proactively mitigate bottlenecks.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
